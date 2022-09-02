@@ -1,14 +1,14 @@
 function random_labelled_graph()
     n = 15
     Random.seed!(1)
-    A = Float64[ rand() < 0.5 ? 0 : rand() for i=1:n, j=1:n]
+    A = Float64[ rand(RNG) < 0.5 ? 0 : rand(RNG) for i=1:n, j=1:n]
     for i=1:n
         A[i, 1:i-1] = A[1:i-1, i]
         A[i, i] = 0
     end
-    x = rand(n)
-    y = rand(n)
-    z = rand(n)
+    x = rand(RNG, n)
+    y = rand(RNG, n)
+    z = rand(RNG, n)
     p = graphplot(A,
               nodesize = 0.2,
               node_weights = 1:n,
@@ -74,7 +74,7 @@ function multigraphs()
 end
 
 function arc_chord_diagrams()
-    adjmat = Symmetric(sparse(rand(0:1,8,8)))
+    adjmat = Symmetric(sparse(rand(RNG, 0:1,8,8)))
     plot(
          graphplot(adjmat,
                    method=:chorddiagram,
@@ -101,7 +101,7 @@ function marker_properties()
               linecolor=:gray,
               linewidth=2.5,
               nodeshape=:circle,
-              node_z=rand(N), markercolor=:viridis,
+              node_z=rand(RNG, N), markercolor=:viridis,
               nodestrokewidth=1.5,
               markerstrokestyle=:solid,
               markerstrokealpha=1.0,
@@ -158,7 +158,7 @@ end
 
 function custom_nodeshapes_single()
     Random.seed!(6)
-    g = rand(5,5)
+    g = rand(RNG, 5,5)
     g[g .> 0.5] .= 0
     for i in 1:5
         g[i,i] = 0
@@ -168,7 +168,7 @@ end
 
 function custom_nodeshapes_various()
     Random.seed!(6)
-    g = rand(5,5)
+    g = rand(RNG, 5,5)
     g[g .> 0.5] .= 0
     for i in 1:5
         g[i,i] = 0

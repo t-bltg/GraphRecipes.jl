@@ -1,6 +1,9 @@
 using GraphRecipes
+using StableRNGs
 using Plots
 using Test
+
+const RNG = StableRNG(1234)
 
 include("figures.jl")
 
