@@ -1,9 +1,22 @@
 using GraphRecipes
 using StableRNGs
+using Random
+using Graphs
 using Plots
 using Test
 
 const RNG = StableRNG(1234)
+
+ltol() = 1e-5  # local tolerance
+ctol() = 1e-3  # ci tolerance
+isci() = get(ENV, "CI", "false") == "true"
+
+# FIXME: use a stable random number generator in `Graphs`
+# @eval Graphs function getRNG(seed::Integer=-1)
+#     @eval using Random
+#     Random.seed!(RNG, seed)
+#     RNG
+# end
 
 include("figures.jl")
 
@@ -12,7 +25,6 @@ include("figures.jl")
     @test GraphRecipes.directed_curve(0., 1., 0., 1.) == GraphRecipes.directed_curve(0, 1, 0, 1)
 
     @testset "Functions from Plots.jl" begin
-
         @test GraphRecipes.isnothing(nothing) == Plots.isnothing(nothing)
         @test GraphRecipes.isnothing(missing) == Plots.isnothing(missing)
         @test GraphRecipes.isnothing(NaN) == Plots.isnothing(NaN)
@@ -21,7 +33,7 @@ include("figures.jl")
         @test GraphRecipes.isnothing(0.0) == Plots.isnothing(0.0)
         @test GraphRecipes.isnothing(1.0) == Plots.isnothing(1.0)
 
-        for (s, e) in [ (rand(), rand()) for i in 1:100 ]
+        for (s, e) in [(rand(RNG), rand(RNG)) for i in 1:100]
             @test GraphRecipes.partialcircle(s, e) == Plots.partialcircle(s, e)
         end
 
@@ -35,12 +47,12 @@ include("figures.jl")
         end
 
         @testset "islabel" begin
-            @test GraphRecipes.islabel("hi") == true
-            @test GraphRecipes.islabel(1) == true
-            @test GraphRecipes.islabel(missing) == false
-            @test GraphRecipes.islabel(NaN) == false
-            @test GraphRecipes.islabel(false) == false
-            @test GraphRecipes.islabel("") == false
+            @test GraphRecipes.islabel("hi")
+            @test GraphRecipes.islabel(1)
+            @test !GraphRecipes.islabel(missing)
+            @test !GraphRecipes.islabel(NaN)
+            @test !GraphRecipes.islabel(false)
+            @test !GraphRecipes.islabel("")
         end
 
         @testset "control_point" begin
@@ -67,7 +79,7 @@ end
 
 # using Distributions
 # n = 1000
-# x = rand(Gamma(2), n)
+# x = rand(RNG, Gamma(2), n)
 # y = -0.5x + randn(n)
 # marginalhist(x, y)
 
@@ -78,7 +90,7 @@ end
 # tickers = ["IBM", "Google", "Apple", "Intel"]
 # N = 10
 # D = length(tickers)
-# weights = rand(N,D)
+# weights = rand(RNG, N,D)
 # weights ./= sum(weights, 2)
 # returns = sort!((1:N) + D*randn(N))
 

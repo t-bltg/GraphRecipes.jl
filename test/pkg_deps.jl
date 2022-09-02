@@ -1,4 +1,3 @@
-
 module PkgDeps
 
 using GraphRecipes
@@ -119,4 +118,4 @@ end
 # to use:
 # depsgraph(PkgDeps.args...)
 
-end # module
+end

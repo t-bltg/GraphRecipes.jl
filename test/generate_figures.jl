@@ -1,10 +1,10 @@
-using Random
-using LinearAlgebra
-using SparseArrays
-using GraphRecipes
-using Plots
-using LightGraphs
 using AbstractTrees
+using LinearAlgebra
+using GraphRecipes
+using SparseArrays
+using Random
+using Graphs
+using Plots
 
 cd(@__DIR__)
 include("parse_readme.jl")

@@ -1,6 +1,6 @@
 function random_labelled_graph()
     n = 15
-    Random.seed!(1)
+    Random.seed!(RNG, 1)
     A = Float64[ rand(RNG) < 0.5 ? 0 : rand(RNG) for i=1:n, j=1:n]
     for i=1:n
         A[i, 1:i-1] = A[1:i-1, i]
@@ -95,7 +95,7 @@ function marker_properties()
     N = 8
     g = barabasi_albert(N, 1; seed = 42)
     weights = [length(neighbors(g, i)) for i in 1:nv(g)]
-    Random.seed!(42)
+    Random.seed!(RNG, 42)
     graphplot(g, curvature_scalar=0,
               node_weights=weights, nodesize=0.25,
               linecolor=:gray,
@@ -157,7 +157,7 @@ function diamond_nodeshape_wh(x_i, y_i, h, w)
 end
 
 function custom_nodeshapes_single()
-    Random.seed!(6)
+    Random.seed!(RNG, 6)
     g = rand(RNG, 5,5)
     g[g .> 0.5] .= 0
     for i in 1:5
@@ -167,7 +167,7 @@ function custom_nodeshapes_single()
 end
 
 function custom_nodeshapes_various()
-    Random.seed!(6)
+    Random.seed!(RNG, 6)
     g = rand(RNG, 5,5)
     g[g .> 0.5] .= 0
     for i in 1:5
@@ -177,7 +177,7 @@ function custom_nodeshapes_various()
 end
 
 function funky_edge_and_marker_args()
-    Random.seed!(6)
+    Random.seed!(RNG, 6)
     n = 5
     g = SimpleDiGraph(n)
 
